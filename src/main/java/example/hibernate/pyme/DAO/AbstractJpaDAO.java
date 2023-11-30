@@ -13,22 +13,25 @@ import example.hibernate.pyme.models.Empleado;
 public abstract class AbstractJpaDAO< T extends Serializable > {
 
 	   private Class< T > clazz;
-
-	   EntityManager entityManager = DBConfig.getEntityManager();
 	   
 	   public final void setClazz( Class< T > clazzToSet ){
 		  this.clazz = clazzToSet;
 	   }
+	   
+	   EntityManager entityManager = null;
 
 	   public T findOne( int id ){
+		  entityManager = DBConfig.getEntityManager();
 	      return entityManager.find( clazz, id );
 	   }
 	   public List< T > findAll(){
+		   entityManager = DBConfig.getEntityManager();
 	      return entityManager.createQuery( "from " + clazz.getName() )
 	       .getResultList();
 	   }
 
 	   public void create( T entity ){
+		   entityManager = DBConfig.getEntityManager();
 			EntityTransaction tx = entityManager.getTransaction();
 			tx.begin();
 		    entityManager.persist( entity );
@@ -36,6 +39,7 @@ public abstract class AbstractJpaDAO< T extends Serializable > {
 	   }
 
 	   public T update( T entity ){
+		   entityManager = DBConfig.getEntityManager();
 		   EntityTransaction tx = entityManager.getTransaction();
 		   tx.begin();
 		   T entityMerged = entityManager.merge( entity );
@@ -44,6 +48,7 @@ public abstract class AbstractJpaDAO< T extends Serializable > {
 	   }
 
 	   public void delete( T entity ){
+		   entityManager = DBConfig.getEntityManager();
 		  EntityTransaction tx = entityManager.getTransaction();
 		  tx.begin();
 		  entityManager.remove( entity );

@@ -39,7 +39,6 @@ public class App
 		EntityManager em = DBConfig.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		
 			em.persist(new Empleado("Matias"));
 		tx.commit();
 	}
